@@ -30,7 +30,7 @@ export function PrioritizationPanel({ onPrioritiesChange }: { onPrioritiesChange
       shadow-lg hover:shadow-xl
       z-30
     `}>
-      {/* Clickable toggle handle */}
+
       <div 
         className="
           w-16 flex-shrink-0
@@ -52,7 +52,7 @@ export function PrioritizationPanel({ onPrioritiesChange }: { onPrioritiesChange
         </span>
       </div>
 
-      {/* Collapsible content area */}
+  
       <div className={`
         flex-1 p-4
         transition-opacity duration-200
@@ -66,7 +66,7 @@ export function PrioritizationPanel({ onPrioritiesChange }: { onPrioritiesChange
             mb-3 pb-2
             border-b border-purple-200
           ">
-            🎚️ Prioritization Weights
+             Prioritization Weights
           </h3>
           
           <div className="space-y-4">

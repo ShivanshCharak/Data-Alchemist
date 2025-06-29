@@ -35,7 +35,7 @@ export function NLModifyBar({ originalData, onModified }: any) {
       bg-yellow-50/90 backdrop-blur-sm border-r-2 border-yellow-200
       rounded-r-lg shadow-lg hover:shadow-xl z-10 transition-all duration-300
     `}>
-      {/* Toggle handle */}
+
       <div
         className="w-16 bg-yellow-100 hover:bg-yellow-200 flex items-center justify-center cursor-pointer"
         onClick={() => setIsExpanded(!isExpanded)}
@@ -45,7 +45,7 @@ export function NLModifyBar({ originalData, onModified }: any) {
         </span>
       </div>
 
-      {/* Expanded content */}
+
       <div className={`flex-1 p-4 ${isExpanded ? 'opacity-100 ml-0' : 'opacity-0 w-0 -ml-16'} transition-all overflow-y-auto`}>
         <h3 className="font-bold text-lg text-yellow-900 mb-3">✍ Modify Data</h3>
         <input

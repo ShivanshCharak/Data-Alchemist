@@ -35,7 +35,7 @@ export function AIValidatorPanel({ clients, workers, tasks }: {
 
   return (
     <div className="bg-red-50 border border-red-200 rounded-md p-4 mt-6">
-      <h2 className="text-lg font-semibold text-red-700 mb-2">🧠 AI Validator</h2>
+      <h2 className="text-lg font-semibold text-red-700 mb-2"> AI Validator</h2>
       <button
         onClick={handleValidate}
         disabled={loading}

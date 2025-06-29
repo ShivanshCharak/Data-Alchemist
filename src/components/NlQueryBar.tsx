@@ -47,7 +47,7 @@ export function NLQueryBar({clientData,workerData,taskData}: {
       shadow-lg hover:shadow-xl
       z-10
     `}>
-      {/* Toggle handle */}
+ 
       <div 
         className="w-16 flex-shrink-0 bg-teal-100 hover:bg-teal-200 flex items-center justify-center cursor-pointer"
         onClick={() => setIsExpanded(!isExpanded)}
@@ -57,7 +57,7 @@ export function NLQueryBar({clientData,workerData,taskData}: {
         </span>
       </div>
 
-      {/* Panel content */}
+    
       <div className={`
         flex-1 p-4 overflow-y-auto
         transition-all duration-300 ease-in-out
@@ -65,7 +65,7 @@ export function NLQueryBar({clientData,workerData,taskData}: {
       `}>
         <div className="min-w-[300px] space-y-3">
           <h3 className="font-bold text-lg text-teal-900 mb-3 pb-2 border-b border-teal-200">
-            🔍 Natural Language Query
+             Natural Language Query
           </h3>
           
           <input
@@ -92,7 +92,7 @@ export function NLQueryBar({clientData,workerData,taskData}: {
               </span>
             ) : (
               <span className="flex items-center justify-center gap-2">
-                🚀 Run Query
+                 Run Query
               </span>
             )}
           </button>
@@ -100,8 +100,6 @@ export function NLQueryBar({clientData,workerData,taskData}: {
           <div className="text-xs text-teal-700 italic mt-2">
             {`Examples: "Tasks with priority > 5", "Group A tasks in phase 2-3`}
           </div>
-
-          {/* 🔎 Preview filtered data */}
           {previewData&&previewData.length > 0 && (
             <div className="bg-white mt-4 max-h-56 overflow-y-auto rounded border p-2 text-sm text-gray-700">
               <h4 className="text-teal-800 font-semibold mb-1">📋 Preview ({previewData.length} items)</h4>

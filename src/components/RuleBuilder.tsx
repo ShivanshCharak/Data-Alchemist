@@ -98,7 +98,7 @@ export function RuleBuilder({ onRulesChange }: { onRulesChange: (rules:IRules[])
         </span>
       </div>
 
-      {/* Collapsible content area */}
+    
       <div className={`
         flex-1 p-4
         transition-opacity duration-200
@@ -141,7 +141,7 @@ export function RuleBuilder({ onRulesChange }: { onRulesChange: (rules:IRules[])
             onClick={addRule} 
             className="bg-blue-600 text-white px-4 py-1 rounded w-full hover:bg-blue-700 transition-colors"
           >
-            ➕ Add Rule
+            Add Rule
           </button>
           
           <div className="bg-blue-50 p-2 rounded max-h-32 overflow-y-auto">

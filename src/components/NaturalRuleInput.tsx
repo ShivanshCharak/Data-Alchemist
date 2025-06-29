@@ -58,7 +58,7 @@ const parseRule = async () => {
       shadow-lg hover:shadow-xl
       z-20
     `}>
-      {/* Clickable toggle handle */}
+  
       <div 
         className="
           w-16 flex-shrink-0
@@ -80,7 +80,7 @@ const parseRule = async () => {
         </span>
       </div>
 
-      {/* Collapsible content area */}
+   
       <div className={`
         flex-1 p-4
         transition-opacity duration-200
@@ -94,7 +94,7 @@ const parseRule = async () => {
             mb-3 pb-2
             border-b border-indigo-200
           ">
-            🧠 Natural Language to Rule
+             Natural Language to Rule
           </h3>
           
           <input
@@ -122,7 +122,7 @@ const parseRule = async () => {
               </span>
             ) : (
               <span className="flex items-center justify-center gap-2">
-                🔍 Parse Rule
+                 Parse Rule
               </span>
             )}
           </button>
