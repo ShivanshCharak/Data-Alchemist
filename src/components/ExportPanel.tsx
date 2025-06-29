@@ -30,7 +30,7 @@ export function ExportPanel({
     // <div className="p-4 border rounded-xl text-gray-800">
     //   <h2 className="text-lg font-bold">Export Panel</h2>
 
-      <button onClick={exportData} className=" cursor-pointer  bg-green-600 text-white px-4 py-4 rounded absolute bottom-10 right-10">
+      <button onClick={exportData} className=" cursor-pointer  bg-green-600 text-white px-4 py-4 rounded fixed bottom-10 right-10">
         📤 Download rules.json
       </button>
     // </div>

@@ -43,7 +43,7 @@ export function RuleRecommendationPanel({ allData}:{allData:{
       {suggestedRules.length > 0 && (
         <div className="mt-4 text-sm">
           <h4 className="font-semibold text-blue-800">Suggestions:</h4>
-          <ul className="list-disc pl-5 space-y-1">
+          <ul className="list-disc pl-5 space-y-1 wrap-break-word">
             {suggestedRules.map((r, i) => (
               <li key={i} className="bg-white rounded p-2 border text-blue-800">
                 <code>{JSON.stringify(r)}</code>

@@ -103,8 +103,9 @@ export default function Home() {
 
           {taskData.length > 0 && (
             <NLQueryBar
-              originalData={taskData}
-              onFilteredData={setFilteredTaskData}
+              clientData={clientData}
+              workerData={workerData}
+              taskData={taskData}
               className="transform translate-y-[100px]"
             />
           )}

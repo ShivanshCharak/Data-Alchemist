@@ -1,10 +1,11 @@
 "use client";
-import { INLQuery, ITask } from "@/types/sheets";
+import { IClient, INLQuery, ITask, IWorker } from "@/types/sheets";
 import { useState } from "react";
 
-export function NLQueryBar({ originalData, onFilteredData,className }: {
-  originalData:ITask[],
-  onFilteredData:(data:ITask[])=> void,
+export function NLQueryBar({clientData,workerData,taskData}: {
+  clientData:IClient[],
+  workerData:IWorker[],
+  taskData:ITask[]
   className?:string
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -18,11 +19,11 @@ export function NLQueryBar({ originalData, onFilteredData,className }: {
       const res = await fetch("/api/nl-query", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt, data: originalData }),
+        body: JSON.stringify({ prompt, data: {clientData,workerData,taskData} }),
       });
       
       const { filteredData } = await res.json();
-      onFilteredData(filteredData);
+  
       setPreviewData(filteredData);
     } catch (err) {
       console.log(err)
