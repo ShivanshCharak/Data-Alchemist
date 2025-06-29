@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const { data,context } = await req.json();
-console.log(context)
+  const { data, context} = await req.json();
   const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -16,7 +15,7 @@ console.log(context)
         {
           role: "system",
           content:
-            "You are an expert in data quality. make the correction according to the data i provide you with the key context and data find the errors and return the output like which field of which sheet has error and what is it no json data just the reason for every sheets and every field present for clients workers and tasks and include any aditioon object keys u get in detail and think as far as you can that theres no need to ask for u want u want to asks",
+            "You are an expert in data quality. make the correction according to the data i provide you with the key context and data find the errors and return the output like which field of which sheet has error and what is it no json data just the reason for every sheets and every field present for clients workers and tasks and include any aditioon object keys u get in detail and think as far as you can that theres no need to ask for u want u want to asks ",
         },
         {
           role: "user",
@@ -38,9 +37,9 @@ console.log(context)
 
     return NextResponse.json({ correctedData: message });
   } catch (err) {
-    console.error("❌ Failed to parse corrected data:", message);
+    console.error("❌ Failed to parse corrected data:", message,err);
     return NextResponse.json(
-      { error: "Failed to parse JSON from AI response", raw: message },
+      { error: "Failed to parse JSON from AI response", err, raw: message },
       { status: 500 }
     );
   }

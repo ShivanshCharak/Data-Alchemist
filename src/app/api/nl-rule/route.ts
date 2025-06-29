@@ -45,9 +45,9 @@ Only return JSON, e.g.:
   } catch {
     parsedRules = rawContent
       .split("\n\n")
-      .map((str:any) => str.trim())
+      .map((str:string) => str.trim())
       .filter(Boolean)
-      .map((block:any) => {
+      .map((block:string) => {
         try {
           return JSON.parse(block);
         } catch {

@@ -1,7 +1,6 @@
 
 "use client";
-
-import { error } from "node:console";
+import { IClient, ITask, IWorker, ValidationErrors } from "@/types/sheets";
 import { ChangeEvent } from "react";
 import * as XLSX from "xlsx";
 
@@ -10,30 +9,46 @@ export function Upload({
   onWorkersParsed,
   onTasksParsed,
   onValidation,
-}: any) {
+}: {
+  onClientsParsed:(client:IClient[])=>void
+  onWorkersParsed:(worker:IWorker[])=>void,
+  onTasksParsed:(task:ITask[])=>void,
+  onValidation:(validation:ValidationErrors)=>void,
+}) {
   const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
 
-    const parsed: Record<string, any[]> = {
+    const parsed:{
+      clients:IClient[],
+      workers:IWorker[],
+      tasks:ITask[]
+    } = {
       clients: [],
       workers: [],
       tasks: [],
     };
 
-    for (let file of Array.from(files)) {
+    for (const file of Array.from(files)) {
       const data = await file.arrayBuffer();
       console.log("data",data)
 
       const workbook = XLSX.read(data);
       console.log("workbook", workbook)
-      for( let sheetName of workbook.SheetNames){
-          const json = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
-          console.log("json",json)
-      if(sheetName.toLowerCase().includes("client")) parsed.clients = json;;
-      if (sheetName.toLowerCase().includes("worker")) parsed.workers = json;
-      if (sheetName.toLowerCase().includes("task")) parsed.tasks = json;
+      for (const sheetName of workbook.SheetNames) {
+        const sheet = workbook.Sheets[sheetName];
+        if (sheetName.toLowerCase().includes("client")) {
+          const json = XLSX.utils.sheet_to_json<IClient>(sheet);
+          parsed.clients = json;
+        } else if (sheetName.toLowerCase().includes("worker")) {
+          const json = XLSX.utils.sheet_to_json<IWorker>(sheet);
+          parsed.workers = json;
+        } else if (sheetName.toLowerCase().includes("task")) {
+          const json = XLSX.utils.sheet_to_json<ITask>(sheet);
+          parsed.tasks = json;
+        }
       }
+      
     }
 
     onClientsParsed(parsed.clients);
@@ -44,7 +59,11 @@ export function Upload({
     onValidation(validationErrors);
   };
 
-  const validateData = (parsed: any) => {
+  const validateData = (parsed:{
+    clients:IClient[],
+    workers:IWorker[],
+    tasks:ITask[]
+  }) => {
     const errors: Record<string, string[]> = {
       clients: [],
       workers: [],
@@ -59,12 +78,25 @@ export function Upload({
     if (!tasks[0]?.TaskID) errors.tasks.push("Missing TaskID in tasks sheet");
     
 
-    const hasDuplicates = (arr: any[], key: string) =>
-      new Set(arr.map((x) => x[key])).size !== arr.length;
+    const hasDuplicates =<T extends IClient|IWorker|ITask> (arr: T[], key: keyof T):boolean =>{
+      const seen = new Set()
+      for(const item of arr){
+        const value = item[key]
+        if(seen.has(value)) return true
+        seen.add(value)
+      }
+      return false
+    }
     
-    if (hasDuplicates(clients, "ClientID")) errors.clients.push("Duplicate ClientIDs found");
-    if (hasDuplicates(workers, "WorkerID")) errors.workers.push("Duplicate WorkerIDs found");
-    if (hasDuplicates(tasks, "TaskID")) errors.tasks.push("Duplicate TaskIDs found");
+    if (hasDuplicates<IClient>(clients, "ClientID"))
+      errors.clients.push("Duplicate ClientIDs found");
+    
+    if (hasDuplicates<IWorker>(workers, "WorkerID"))
+      errors.workers.push("Duplicate WorkerIDs found");
+    
+    if (hasDuplicates<ITask>(tasks, "TaskID"))
+      errors.tasks.push("Duplicate TaskIDs found");
+    
 
     tasks.forEach((t:ITask, i:number) => {
         if (typeof t.Duration !== "number" || t.Duration < 1) {

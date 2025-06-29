@@ -1,11 +1,16 @@
 "use client";
+import { INLQuery, ITask } from "@/types/sheets";
 import { useState } from "react";
 
-export function NLQueryBar({ originalData, onFilteredData }: any) {
+export function NLQueryBar({ originalData, onFilteredData,className }: {
+  originalData:ITask[],
+  onFilteredData:(data:ITask[])=> void,
+  className?:string
+}) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
-  const [previewData, setPreviewData] = useState<any[]>([]);
+  const [previewData, setPreviewData] = useState<INLQuery[]>([]);
 
   const runQuery = async () => {
     setLoading(true);
@@ -20,6 +25,7 @@ export function NLQueryBar({ originalData, onFilteredData }: any) {
       onFilteredData(filteredData);
       setPreviewData(filteredData);
     } catch (err) {
+      console.log(err)
       alert("Failed to fetch filtered results");
       setPreviewData([]);
     } finally {
@@ -95,7 +101,7 @@ export function NLQueryBar({ originalData, onFilteredData }: any) {
           </div>
 
           {/* 🔎 Preview filtered data */}
-          {previewData.length > 0 && (
+          {previewData&&previewData.length > 0 && (
             <div className="bg-white mt-4 max-h-56 overflow-y-auto rounded border p-2 text-sm text-gray-700">
               <h4 className="text-teal-800 font-semibold mb-1">📋 Preview ({previewData.length} items)</h4>
               <pre className="whitespace-pre-wrap break-words text-xs">

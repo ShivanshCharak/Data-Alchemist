@@ -1,38 +1,60 @@
 "use client";
 import { useState } from "react";
+import { IRules, RuleType } from "@/types/sheets";
 
-export function RuleBuilder({ onRulesChange }: { onRulesChange: (rules: any[]) => void }) {
+
+export function RuleBuilder({ onRulesChange }: { onRulesChange: (rules:IRules[]) => void }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [rules, setRules] = useState<any[]>([]);
-  const [type, setType] = useState("coRun");
+  const [rules, setRules] = useState<IRules[]>([]);
+  const [type, setType] = useState<RuleType>("coRun");
   const [input, setInput] = useState("");
+  
 
   
   const addRule = () => {
-    let rule: any = { type };
+    let rule: IRules;
   
     if (type === "coRun") {
-      rule.tasks = input.split(",").map(x => x.trim());
-      rule.maxConcurrent = 2;
-      rule.minConcurrent = 1;
+      rule = {
+        type,
+        tasks: input.split(",").map((x) => x.trim()),
+        maxConcurrent: 2,
+        minConcurrent: 1,
+      };
     } else if (type === "slotRestriction") {
-      rule.group = input;
-      rule.minCommonSlots = 2;
+      rule = {
+        type,
+        group: input,
+        minCommonSlots: 2,
+      };
     } else if (type === "loadLimit") {
-      rule.group = input;
-      rule.maxLoad = input === "GroupA" ? 10 : input === "GroupB" ? 8 : 12;
+      rule = {
+        type,
+        group: input,
+        maxLoad: input === "GroupA" ? 10 : input === "GroupB" ? 8 : 12,
+      };
     } else if (type === "phaseWindow") {
       const [task, phases] = input.split(":");
-      rule.task = task.trim();
-      rule.allowedPhases = phases.split(",").map((p) => parseInt(p.trim()));
+      rule = {
+        type,
+        task: task.trim(),
+        allowedPhases: phases.split(",").map((p) => parseInt(p.trim())),
+      };
     } else if (type === "patternMatch") {
       const [regex, template, params] = input.split(":");
-      rule.regex = regex.trim();
-      rule.template = template.trim();
-      rule.parameters = params.split(",").map(p => p.trim());
+      rule = {
+        type,
+        regex: regex.trim(),
+        template: template.trim(),
+        parameters: params.split(",").map((p) => p.trim()),
+      };
     } else if (type === "precedenceOverride") {
-  
-      rule.priorityOrder = input.split(",").map(r => r.trim());
+      rule = {
+        type,
+        priorityOrder: input.split(",").map((r) => r.trim()),
+      };
+    } else {
+      return;
     }
   
     const updated = [...rules, rule];
@@ -41,13 +63,6 @@ export function RuleBuilder({ onRulesChange }: { onRulesChange: (rules: any[]) =
     setInput("");
   };
   
-  const formatRulesPreview = (rules: any[]) => {
-    try {
-      return JSON.stringify(rules, null, 2);
-    } catch (e) {
-      return "Invalid rule format";
-    }
-  };
   return (
     <div className={`
       fixed right-0 top-[160px] -translate-y-1/2
@@ -102,7 +117,7 @@ export function RuleBuilder({ onRulesChange }: { onRulesChange: (rules: any[]) =
           
           <select 
             value={type} 
-            onChange={(e) => setType(e.target.value)} 
+            onChange={(e) => setType(e.target.value as RuleType)} 
             className="border px-2 py-1 w-full rounded "
           >
             <option value="coRun">Co-Run</option>

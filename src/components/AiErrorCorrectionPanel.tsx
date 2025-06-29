@@ -1,8 +1,13 @@
 "use client";
 import { useState } from "react";
 import {context} from '@/components/Context'
+import { IClient, IWorker,ITask } from "@/types/sheets";
 
-export function AIErrorCorrectionPanel({ data }: any) {
+export function AIErrorCorrectionPanel({clients, workers,tasks }: {
+  clients: IClient[],
+  workers: IWorker[],
+  tasks: ITask[],
+}) {
     const [loading, setLoading] = useState(false);
     const [suggestions,setSuggestions] = useState<string>("")
 
@@ -12,7 +17,7 @@ export function AIErrorCorrectionPanel({ data }: any) {
             const res = await fetch("/api/ai-correct", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ data, context }),
+                body: JSON.stringify({ data:{clients,workers,tasks}, context }),
             });
             const { correctedData } = await res.json();
             
@@ -20,6 +25,7 @@ export function AIErrorCorrectionPanel({ data }: any) {
             setSuggestions(correctedData)
     
         } catch (e) {
+          console.log(e)
             alert("Failed to correct data");
         } finally {
             setLoading(false);

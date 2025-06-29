@@ -1,4 +1,4 @@
-export let context =`
+export const context =`
 Data Entity Explanation:
 clients.""
 ClientID, ClientName, PriorityLevel, RequestedTaskIDs, GroupTag, AttributesJSON

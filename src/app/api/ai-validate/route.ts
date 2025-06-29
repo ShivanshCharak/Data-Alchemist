@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { context } from "@/components/Context";
 
 export async function POST(req: Request) {
-  const {data, context } = await req.json();
+  const {data } = await req.json();
 
 
   const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -41,7 +41,7 @@ Return a JSON array of validation issues. Do not gimme python output Do NOT fix 
     console.log(parsed)
     return NextResponse.json({ hints: parsed });
   } catch (err) {
-    console.error("❌ Failed to parse AI validator JSON:\n", content);
-    return NextResponse.json({ error: "Failed to parse validator response", raw: content }, { status: 500 });
+    console.error(" Failed to parse AI validator JSON:\n", err, content);
+    return NextResponse.json({ error: "Failed to parse validator response",err, raw: content }, { status: 500 });
   }
 }

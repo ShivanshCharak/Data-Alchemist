@@ -2,10 +2,15 @@
 "use client";
 
 import { useState } from "react";
-
-export function RuleRecommendationPanel({ allData, onRulesSuggested }: any) {
+import { RuleJson,IClient,IWorker,ITask } from "@/types/sheets";
+export function RuleRecommendationPanel({ allData}:{allData:{
+  clients: IClient[];
+  workers: IWorker[];
+  tasks: ITask[];
+}
+}) {
   const [loading, setLoading] = useState(false);
-  const [suggestedRules, setSuggestedRules] = useState<any[]>([]);
+  const [suggestedRules, setSuggestedRules] = useState<RuleJson[]>([]);
 
   const fetchSuggestions = async () => {
     setLoading(true);
@@ -17,7 +22,6 @@ export function RuleRecommendationPanel({ allData, onRulesSuggested }: any) {
       });
       const { rules } = await res.json();
       setSuggestedRules(rules);
-      onRulesSuggested?.(rules);
     } catch {
       alert("Failed to fetch rule suggestions");
     } finally {

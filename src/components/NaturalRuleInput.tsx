@@ -1,13 +1,22 @@
 "use client";
 import { useState } from "react";
+import { IRules,IClient,IWorker,ITask } from "@/types/sheets";
 
-export function NaturalRuleInput({ onAIParsedRule,originalData }:any) {
+export function NaturalRuleInput({ onAIParsedRule,originalData }:{
+  onAIParsedRule:(aiRule: IRules) => void,
+  originalData:{ 
+    clients: IClient[];
+    workers: IWorker[];
+    tasks: ITask[];
+}
+
+}) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [rules,setRules] = useState([])
 const parseRule = async () => {
-  if (!originalData || originalData.length === 0) {
+  if (!originalData) {
     alert("Please upload data first");
     return;
   }
@@ -35,14 +44,6 @@ const parseRule = async () => {
   setLoading(false);
 };
 
-  
-
-  const fakeAIParse = async (text: string) => {
-    if (text.includes("co-run")) {
-      return { type: "coRun", tasks: ["T1", "T2"] };
-    }
-    return { type: "unknown", input: text };
-  };
 
   return (
     <div className={`

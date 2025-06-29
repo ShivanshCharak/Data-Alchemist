@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
+import { IPriority } from "@/types/sheets";
 
-export function PrioritizationPanel({ onPrioritiesChange }: { onPrioritiesChange: (weights: any) => void }) {
+export function PrioritizationPanel({ onPrioritiesChange }: { onPrioritiesChange: (priorities: IPriority) => void }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [weights, setWeights] = useState({
     priorityLevel: 5,

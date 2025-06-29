@@ -7,54 +7,52 @@ import { NLQueryBar } from "@/components/NlQueryBar";
 import { NLModifyBar } from "@/components/NlModifyBar";
 import { AIValidatorPanel } from "@/components/AiValidator";
 import { RuleDashboard } from "@/components/RuleDashboard";
+import { ITask,IClient,IWorker,ValidationErrors } from "@/types/sheets";
 import { RuleRecommendationPanel } from "@/components/RuleRecommendationPanel";
 import { AIErrorCorrectionPanel } from "@/components/AiErrorCorrectionPanel";
 
-type Client = {
-  ClientID: string;
-  ClientName: string;
-  PriorityLevel: string;
-  RequestedTaskIDs: string;
-  GroupTag: string;
-  AttributesJSON: string;
-};
 
-type Worker = {
-  WorkerID: string;
-  WorkerName: string;
-  Skills: string;
-  AvailableSlots: string;
-  MaxLoadPerPhase: string;
-  WorkerGroup: string;
-  QualificationLevel: string;
-};
+// export type Client = {
+//   ClientID: string;
+//   ClientName: string;
+//   PriorityLevel: string;
+//   RequestedTaskIDs: string;
+//   GroupTag: string;
+//   AttributesJSON: string;
+// };
 
-type Task = {
-  TaskID: string;
-  TaskName: string;
-  Category: string;
-  Duration: string;
-  RequiredSkills: string;
-  PreferredPhases: string;
-  MaxConcurrent: string;
-};
+// type Worker = {
+//   WorkerID: string;
+//   WorkerName: string;
+//   Skills: string;
+//   AvailableSlots: string;
+//   MaxLoadPerPhase: string;
+//   WorkerGroup: string;
+//   QualificationLevel: string;
+// };
 
-type ValidationErrors = {
-  clients?: string[];
-  workers?: string[];
-  tasks?: string[];
-  crossEntity?: string[];
-};
+// type Task = {
+//   TaskID: string;
+//   TaskName: string;
+//   Category: string;
+//   Duration: string;
+//   RequiredSkills: string;
+//   PreferredPhases: string;
+//   MaxConcurrent: string;
+// };
+
+
+export type AnyData = IClient[] | IWorker[] | ITask[];
 
 export default function Home() {
-  const [clientData, setClientData] = useState<Client[]>([]);
-  const [workerData, setWorkerData] = useState<Worker[]>([]);
-  const [taskData, setTaskData] = useState<Task[]>([]);
+  const [clientData, setClientData] = useState<IClient[]>([]);
+  const [workerData, setWorkerData] = useState<IWorker[]>([]);
+  const [taskData, setTaskData] = useState<ITask[]>([]);
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
-  const [filteredTaskData, setFilteredTaskData] = useState<Task[] | null>(null);
+  const [filteredTaskData, setFilteredTaskData] = useState<ITask[] | null>(null);
   const [activeTab, setActiveTab] = useState<'clients' | 'workers' | 'tasks'>('clients');
-  const [modifiedClients, setModifiedClients] = useState<Client[] | null>(null);
-  const [modifiedWorkers, setModifiedWorkers] = useState<Worker[] | null>(null);
+  const [modifiedClients, setModifiedClients] = useState<IClient[] | null>(null);
+  const [modifiedWorkers, setModifiedWorkers] = useState<IWorker[] | null>(null);
 
   useEffect(() => {
     // Any side effects can be added here
@@ -86,16 +84,16 @@ export default function Home() {
                 ? workerData
                 : taskData
             }
-            onModified={(newData:any) => {
+            onModified={(newData:AnyData) => {
               setFilteredTaskData(null);
 
               if (activeTab === 'clients') {
-                setModifiedClients(newData);
+                setModifiedClients(newData as IClient[]);
               } else if (activeTab === 'workers') {
-                setModifiedWorkers(newData);
+                setModifiedWorkers(newData as IWorker[]);
               } else {
                 const updated = taskData.map(task => {
-                  const modified = newData.find((m:ITask) => m.TaskID === task.TaskID);
+                  const modified = (newData as ITask[]).find((m:ITask) => m.TaskID === task.TaskID);
                   return modified ? { ...task, ...modified } : task;
                 });
                 setTaskData(updated);
@@ -107,7 +105,6 @@ export default function Home() {
             <NLQueryBar
               originalData={taskData}
               onFilteredData={setFilteredTaskData}
-              Data={filteredTaskData}
               className="transform translate-y-[100px]"
             />
           )}
@@ -190,24 +187,23 @@ export default function Home() {
         {clientData.length > 0 && workerData.length > 0 && taskData.length > 0 && (
           <RuleRecommendationPanel
             allData={{ clients: clientData, workers: workerData, tasks: taskData }}
-            onRulesSuggested={() => {}}
           />
         )}
 
         <AIErrorCorrectionPanel
-          data={{
-            clients: clientData,
-            workers: workerData,
-            tasks: taskData,
-          }}
+        
+            clients= {clientData}
+            workers= {workerData}
+            tasks= {taskData}
+          
         />
         
         <AIValidatorPanel
-          data={{
-            clients: clientData,
-            workers: workerData,
-            tasks: taskData,
-          }}
+       
+            clients= {clientData}
+            workers= {workerData}
+            tasks= {taskData}
+          
         />
       </div>
     </main>

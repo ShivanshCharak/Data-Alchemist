@@ -1,14 +1,15 @@
 
 "use client";
 
+import {  IPriority, IRules} from "@/types/sheets";
+
 export function ExportPanel({
-  data,
   rules,
   priorities,
 }: {
-  data: { clients: any[]; workers: any[]; tasks: any[] };
-  rules: any[];
-  priorities: any;
+  
+  rules: IRules[];
+  priorities?: IPriority;
 }) {
   const exportData = () => {
     const bundle = {

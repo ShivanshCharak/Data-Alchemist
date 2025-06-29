@@ -6,12 +6,14 @@ import { RuleBuilder } from "./RuleBuilder";
 import { PrioritizationPanel } from "./Prioritization";
 import { NaturalRuleInput } from "./NaturalRuleInput";
 import { ExportPanel } from "./ExportPanel";
+import { IClient, IPriority, IRules, ITask, IWorker } from "@/types/sheets";
 
-export function RuleDashboard({ data }: { data: { clients: any[]; workers: any[]; tasks: any[] } }) {
-  const [rules, setRules] = useState<any[]>([]);
-  const [priorities, setPriorities] = useState<any>({});
+export function RuleDashboard({ data }: { data: { clients: IClient[]; workers: IWorker[]; tasks: ITask[] } }) {
+  const [rules, setRules] = useState<IRules[]>([]);
+  const [priorities, setPriorities] = useState<IPriority>();
+  console.log("rules",rules,priorities)
 
-  const handleAIParsedRule = (aiRule: any) => {
+  const handleAIParsedRule = (aiRule: IRules) => {
     setRules((prev) => [...prev, aiRule]);
   };
 
@@ -24,7 +26,7 @@ export function RuleDashboard({ data }: { data: { clients: any[]; workers: any[]
 
       <div className="space-y-4">
         <PrioritizationPanel onPrioritiesChange={setPriorities} />
-        <ExportPanel data={data} rules={rules} priorities={priorities} />
+        <ExportPanel rules={rules} priorities={priorities} />
       
       </div>
     </div>

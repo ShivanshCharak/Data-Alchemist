@@ -2,11 +2,18 @@
 
 import { useState } from "react";
 import { context } from "./Context";
+import { IClient, IWorker, ITask,IHints } from "@/types/sheets";
 
-export function AIValidatorPanel({ data }: any) {
-  const [hints, setHints] = useState<string[]>([]);
+export function AIValidatorPanel({ clients, workers, tasks }: {
+  clients:IClient[],
+  workers:IWorker[],
+  tasks:ITask[]
+}) {
+  const [hints, setHints] = useState<IHints[]>([]);
   const [loading, setLoading] = useState(false);
-
+  const data ={
+    clients,workers,tasks
+  }
   const handleValidate = async () => {
     setLoading(true);
     try {
@@ -40,10 +47,10 @@ export function AIValidatorPanel({ data }: any) {
       <div className="mt-4 bg-white p-5 rounded border">
         {hints.length > 0 ? (
           <ul className="space-y-2 text-sm text-red-700 list-disc pl-5">
-            {hints.map((hint:any,index:number)=>(
+            {hints.map((hint:IHints,index:number)=>(
             
             <li key={index}>
-                At Row {hint.rowIndex}: Field "{hint.field}" - {hint.error}
+                At Row {hint.rowIndex}: Field &quot;{hint.field} &quot; - {hint.error}
               </li>
             ))}
           </ul>
